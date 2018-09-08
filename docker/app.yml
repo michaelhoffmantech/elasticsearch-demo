@@ -1,0 +1,15 @@
+version: '2'
+services:
+    foodfacts-app:
+        image: foodfacts
+        environment:
+            - JAVA_OPTIONS=-Xmx1024m -Xms256m
+            - SPRING_PROFILES_ACTIVE=dev
+            - APP_SLEEP=10 # gives time for the database to boot before the application
+            - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=foodfacts-elasticsearch:9300
+        ports:
+            - 8080:8080
+    foodfacts-elasticsearch:
+        extends:
+            file: elasticsearch.yml
+            service: foodfacts-elasticsearch
