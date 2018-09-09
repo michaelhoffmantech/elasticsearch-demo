@@ -55,4 +55,23 @@ I've included the index in the project. It will need to be loaded via the index 
       "index": "food_product_index_v1"
     }
     ```
+    
+## 2.3 - Loading the Data
 
+I'll be using the Elasticsearch Bulk API to load a text file that contains the open food facts data in required format. Elasticsearch bulk can bulk load JSON objects to a specific index and/or type. The file needs to be formatted using new line characters with a blank last line of the file.
+
+1. Open a terminal
+2. Execute the following CURL command, changing the file path based on the location of your project:
+    ```
+    curl -s -XPOST localhost:9200/_bulk -H "Content-Type:application/x-ndjson" --data-binary @/Users/mhoffman/Personal/elasticsearch-demo/data/openfoodfacts.txt
+    ```
+3. Once the load is complete, the contents will be output back to the console.
+4. Open up Kibana and run the following command to view records (679):
+    ```
+    GET food_product_index_v1/product/_search
+    {
+      "query": {
+        "match_all": {}
+      }
+    }
+    ```
