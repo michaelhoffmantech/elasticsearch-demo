@@ -13,13 +13,6 @@ GET food_product_index_v1/product/_search
             }
           }
         }
-      ],
-      "must_not": [
-        {
-          "match": {
-            "productName": "Heineken"
-          }
-        }
       ]
     }
   }
