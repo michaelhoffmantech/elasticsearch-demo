@@ -1,0 +1,5 @@
+POST _analyze
+{
+    "analyzer" : "standard",
+    "text" : "Cranberry Raspberry 100% Juice Blend"
+}

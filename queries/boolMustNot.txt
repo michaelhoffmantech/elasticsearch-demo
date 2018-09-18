@@ -1,0 +1,26 @@
+GET food_product_index_v1/product/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "nested": {
+            "path": "categories",
+            "query": {
+              "match": {
+                "categories.name": "beers"
+              }
+            }
+          }
+        }
+      ],
+      "must_not": [
+        {
+          "match": {
+            "productName": "Heineken"
+          }
+        }
+      ]
+    }
+  }
+}

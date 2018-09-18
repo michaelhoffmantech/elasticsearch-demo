@@ -1,0 +1,29 @@
+GET food_product_index_v1/product/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "match": {
+            "productName": "minute maid orange juice"
+          }
+        },
+        {
+          "nested": {
+            "path": "brands",
+            "query": {
+              "match": {
+                "brands.name": "minute maid orange juice"
+              }
+            }
+          }
+        },
+        {
+          "match": {
+            "ingredients": "minute maid orange juice"
+          }
+        }
+      ]
+    }
+  }
+}

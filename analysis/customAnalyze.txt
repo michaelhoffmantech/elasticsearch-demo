@@ -1,0 +1,19 @@
+POST _analyze
+{
+    "tokenizer" : {
+        "type": "standard"
+    },
+    "filter": [
+        "lowercase",
+        {
+            "type": "stemmer",
+            "name": "light_english"
+        },
+        "unique",
+        {
+            "type": "stop",
+            "stopwords": "_english_, non"
+        }
+    ],
+    "text" : "Plant-based foods and beverages,Beverages,Plant-based foods,Hot beverages,Herbal teas,Teas in tea bags,Non-sugared beverages"
+}
