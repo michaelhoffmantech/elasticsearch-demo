@@ -4,23 +4,20 @@ GET food_product_index_v1/product/_search
     "bool": {
       "should": [
         {
-          "match": {
-            "productName": "minute maid orange juice"
-          }
-        },
-        {
           "nested": {
-            "path": "brands",
+            "path": "categories",
             "query": {
               "match": {
-                "brands.name": "minute maid orange juice"
+                "categories.name": "beers"
               }
             }
           }
-        },
+        }
+      ],
+      "must_not": [
         {
           "match": {
-            "ingredients": "minute maid orange juice"
+            "productName": "Heineken"
           }
         }
       ]

@@ -1,0 +1,269 @@
+{
+  "settings": {
+    "number_of_shards": 2,
+    "number_of_replicas": 1,
+    "analysis": {
+      "analyzer": {
+        "lang_prefix": {
+          "tokenizer": "lang_tokenizer"
+        }
+      },
+      "tokenizer": {
+        "lang_tokenizer": {
+          "pattern": ":",
+          "type": "pattern"
+        }
+      }
+    }
+  },
+  "mappings": {
+    "product": {
+      "properties": {
+        "code": {
+          "type": "keyword",
+          "index": "false"
+        },
+        "url": {
+          "type": "keyword",
+          "index": "false"
+        },
+        "createdDate": {
+          "type": "date",
+          "index": "false"
+        },
+        "lastModifiedDate": {
+          "type": "date",
+          "index": "false"
+        },
+        "productName": {
+          "type": "text"
+        },
+        "genericName": {
+          "type": "text"
+        },
+        "quantity": {
+          "type": "text"
+        },
+        "packaging": {
+          "type": "nested",
+          "properties": {
+            "name": {
+              "type": "keyword"
+            }
+          }
+        },
+        "brands": {
+          "type": "nested",
+          "properties": {
+            "name": {
+              "type": "text"
+            }
+          }
+        },
+        "categories": {
+          "type": "nested",
+          "properties": {
+            "name": {
+              "type": "text",
+              "analyzer": "lang_prefix"
+            }
+          }
+        },
+        "labels": {
+          "type": "nested",
+          "properties": {
+            "name": {
+              "type": "keyword"
+            }
+          }
+        },
+        "manufacturingPlaces": {
+          "type": "nested",
+          "properties": {
+            "name": {
+              "type": "keyword"
+            }
+          }
+        },
+        "purchasePlaces": {
+          "type": "nested",
+          "properties": {
+            "name": {
+              "type": "keyword"
+            }
+          }
+        },
+        "stores": {
+          "type": "nested",
+          "properties": {
+            "name": {
+              "type": "keyword"
+            }
+          }
+        },
+        "countries": {
+          "type": "nested",
+          "properties": {
+            "name": {
+              "type": "keyword"
+            }
+          }
+        },
+        "ingredients": {
+          "type": "text"
+        },
+        "allergens": {
+          "type": "nested",
+          "properties": {
+            "name": {
+              "type": "keyword"
+            }
+          }
+        },
+        "servingSize": {
+          "type": "text"
+        },
+        "additives": {
+          "type": "nested",
+          "properties": {
+            "name": {
+              "type": "keyword"
+            }
+          }
+        },
+        "categoryGroup1": {
+          "type": "keyword"
+        },
+        "categoryGroup2": {
+          "type": "keyword"
+        },
+        "mainCategory": {
+          "type": "keyword"
+        },
+        "energy100g": {
+          "type": "double"
+        },
+        "energyFromFat100g": {
+          "type": "double"
+        },
+        "fat100g": {
+          "type": "double"
+        },
+        "saturatedFat100g": {
+          "type": "double"
+        },
+        "monounsaturatedFat100g": {
+          "type": "double"
+        },
+        "polyunsaturatedFat100g": {
+          "type": "double"
+        },
+        "omega3Fat100g": {
+          "type": "double"
+        },
+        "transFat100g": {
+          "type": "double"
+        },
+        "cholesterol100g": {
+          "type": "double"
+        },
+        "carbohydrates100g": {
+          "type": "double"
+        },
+        "sugars100g": {
+          "type": "double"
+        },
+        "fiber100g": {
+          "type": "double"
+        },
+        "proteins100g": {
+          "type": "double"
+        },
+        "salt100g": {
+          "type": "double"
+        },
+        "sodium100g": {
+          "type": "double"
+        },
+        "alcohol100g": {
+          "type": "double"
+        },
+        "vitamina100g": {
+          "type": "double"
+        },
+        "vitamind100g": {
+          "type": "double"
+        },
+        "vitamine100g": {
+          "type": "double"
+        },
+        "vitamink100g": {
+          "type": "double"
+        },
+        "vitaminc100g": {
+          "type": "double"
+        },
+        "vitaminb1100g": {
+          "type": "double"
+        },
+        "vitaminb2100g": {
+          "type": "double"
+        },
+        "vitaminpp100g": {
+          "type": "double"
+        },
+        "vitaminb6100g": {
+          "type": "double"
+        },
+        "vitaminb9100g": {
+          "type": "double"
+        },
+        "folates100g": {
+          "type": "double"
+        },
+        "vitaminb12100g": {
+          "type": "double"
+        },
+        "biotin100g": {
+          "type": "double"
+        },
+        "pantothenicAcid100g": {
+          "type": "double"
+        },
+        "silica100g": {
+          "type": "double"
+        },
+        "bicarbonate100g": {
+          "type": "double"
+        },
+        "potassium100g": {
+          "type": "double"
+        },
+        "chloride100g": {
+          "type": "double"
+        },
+        "calcium100g": {
+          "type": "double"
+        },
+        "phosphorus100g": {
+          "type": "double"
+        },
+        "iron100g": {
+          "type": "double"
+        },
+        "magnesium100g": {
+          "type": "double"
+        },
+        "zinc100g": {
+          "type": "double"
+        },
+        "copper100g": {
+          "type": "double"
+        },
+        "manganese100g": {
+          "type": "double"
+        }
+      }
+    }
+  }
+}

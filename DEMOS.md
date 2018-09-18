@@ -243,3 +243,133 @@ Run several Boolean queries in Kibana
 
 4. Execute the following query in Kibana:
 
+    ```
+    GET food_product_index_v1/product/_search
+    {
+      "query": {
+        "function_score": {
+          "query": {
+            "match": {
+              "ingredients": "corn syrup and sugar"
+            }
+          },
+          "functions": [
+            {
+              "filter": {
+                "nested": {
+                  "path": "categories",
+                  "query": {
+                    "match": {
+                      "categories.name": "sodas"
+                    }
+                  }
+                }
+              }, 
+              "weight": 30
+            }, 
+            {
+              "filter": {
+                "nested": {
+                  "path": "categories",
+                  "query": {
+                    "match": {
+                      "categories.name": "carbonated-drinks"
+                    }
+                  }
+                }
+              }, 
+              "weight": 28
+            }     
+          ], 
+          "max_boost": 50,
+          "score_mode": "max",
+          "boost_mode": "multiply",
+          "min_score" : 0
+        }
+      }
+    }
+    ```
+
+* Here we see a second type of query
+* Function score
+* We use filters to affect the how documents get returned
+* I'm using weights on the filters to bump the relevancy
+* We can see how the scoring works by adding an explain
+
+5. Add the following line before the first "query":
+
+    ```
+    "explain": true, 
+    ```
+    
+* Elasticsearch provides full description of how Lucene arrived at results
+* Relevancy is a science
+* Explain helps to show scoring as well as TF vs. IDF
+
+# Demo 5 Aggregations
+
+Demonstrate aggregations. 
+
+1. Paste the following in Kibana:
+
+    ```
+    GET food_product_index_v1/product/_search
+    {
+      "size": 0,
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "nested": {
+                "path": "stores",
+                "query": {
+                  "exists": {
+                    "field": "stores.name"
+                  }
+                }
+              }
+            }
+          ],
+          "must_not": [
+            {
+              "nested": {
+                "path": "stores",
+                "query": {
+                  "term": {
+                    "stores.name": {
+                      "value": ""
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "aggs": {
+        "byStore": {
+          "nested": {
+            "path": "stores"
+          },
+          "aggs": {
+            "byStoreName": {
+              "terms": {
+                "field": "stores.name",
+                "size": 5000,
+                "order": {
+                  "_term": "asc"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    ```
+    
+* Several things here
+* Note that we have a size of 0. 
+* We don't want to return query results. I'll explain performance shortly
+* Next I have a query that assures there is a non-empty store name
+* Finally we have the "aggs" declaration
+* This says return all of store names up to a max of 5000 in ascending order.
