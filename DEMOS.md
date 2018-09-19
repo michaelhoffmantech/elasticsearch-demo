@@ -12,8 +12,7 @@ Below are the full details of demos for the Food Facts Elasticsearch presentatio
 3. Open data/openfoodfacts.txt in IntelliJ
 4. Open data/openfoodfacts_search.csv in Numbers
 5. Open a browser with http://localhost:5601 ready to load
-6. Open two terminal windows to the project under ~/Personal/elasticsearch-demo
-7. 
+6. Open two terminal windows to the project under ~/Personal/elasticsearch-demo 
 
 # Demo Contents
 
@@ -22,7 +21,6 @@ Below are the full details of demos for the Food Facts Elasticsearch presentatio
 [Demo 3 - Analyzing Data](#demo-3-analyzing-data)
 [Demo 4 - Search Queries](#demo-4-search-queries)
 [Demo 5 - Aggregations](#demo-5-aggregations)
-[Demo 6 - Autocomplete](#demo-6-autocomplete)
 
 # Demo 1 Running Elasticsearch
 
@@ -375,35 +373,3 @@ Demonstrate aggregations.
 * Next I have a query that assures there is a non-empty store name
 * Finally we have the "aggs" declaration
 * This says return all of store names up to a max of 5000 in ascending order.
-
-# Demo 6 Autocomplete
-
-1. Open Kibana and execute the following query:
-
-GET food_product_index_v1/product/_search
-{
-  "query": {
-    "bool": {
-      "should": [
-        {
-          "term": {
-            "productName": {
-              "value": "ora"
-            }
-          }
-        }
-      ]
-    }
-  }, 
-  "sort": [
-    {
-      "productName": {
-        "order": "asc"
-      }
-    }
-  ]
-}
-
-* Note product name has three letters
-* Look back at mappings and filter we see the configuration of auto-complete
-* Can continue to add characters to narrow search

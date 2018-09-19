@@ -3,24 +3,10 @@
     "number_of_shards": 2,
     "number_of_replicas": 1,
     "analysis": {
-      "filter": {
-        "productName_autocomplete_filter": {
-          "type": "edge_ngram",
-          "min_gram": 3,
-          "max_gram": 20
-        }
-      },
+
       "analyzer": {
         "lang_prefix": {
           "tokenizer": "lang_tokenizer"
-        },
-        "productName_autocomplete": {
-          "type": "custom",
-          "tokenizer": "standard",
-          "filter": [
-            "lowercase",
-            "productName_autocomplete_filter"
-          ]
         }
       },
       "tokenizer": {
@@ -51,8 +37,7 @@
           "index": "false"
         },
         "productName": {
-          "type": "text",
-          "analyzer": "productName_autocomplete"
+          "type": "text"
         },
         "genericName": {
           "type": "text"
