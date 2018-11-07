@@ -42,7 +42,7 @@ GET food_product_index_v1/product/_search
             "field": "stores.name",
             "size": 5000,
             "order": {
-              "_term": "asc"
+              "_key": "asc"
             }
           }
         }

@@ -1,18 +1,18 @@
 # Demos
 
-Below are the full details of demos for the Food Facts Elasticsearch presentation. 
+Below are the full details of demos for the Food Facts Elasticsearch presentation.
 
 # Demo Initialization
 
 1. Run the following to reset for the start of the demo:
     ```
-    DELETE food_product_index_v1 
+    DELETE food_product_index_v1
     ```
 2. Open docker/elasticsearch.yml in IntelliJ
 3. Open data/openfoodfacts.txt in IntelliJ
 4. Open data/openfoodfacts_search.csv in Numbers
 5. Open a browser with http://localhost:5601 ready to load
-6. Open two terminal windows to the project under ~/Personal/elasticsearch-demo 
+6. Open two terminal windows to the project under ~/Personal/elasticsearch-demo
 
 # Demo Contents
 
@@ -21,6 +21,7 @@ Below are the full details of demos for the Food Facts Elasticsearch presentatio
 [Demo 3 - Analyzing Data](#demo-3-analyzing-data)
 [Demo 4 - Search Queries](#demo-4-search-queries)
 [Demo 5 - Aggregations](#demo-5-aggregations)
+[Demo 6 - Autocomplete](#demo-6-autocomplete)
 
 # Demo 1 Running Elasticsearch
 
@@ -41,13 +42,13 @@ Going to run Elasticsearch and Kibana
     ```
     GET _cluster/health
     ```
-    
+
 * Convenience endpoint for health
 * Usage of Kibana at client
 
 # Demo 2 Adding the Schema to Elasticsearch
 
-Start by showing data source 
+Start by showing data source
 
 1. Open the file data/openfoodfacts_search.csv
 
@@ -80,9 +81,9 @@ Use Elasticsearch bulk loader to load data into the index
 
 * Content output back to console
 
-Show the scripted output 
+Show the scripted output
 
-1. Open IntelliJ to show data/openfoodfacts.txt
+1. Open data/openfoodfacts.txt
 
 Show the result
 
@@ -124,20 +125,20 @@ Execute the Analyze API against sample data from our source
         "type": "standard"
       },
       "filter": [
-        "lowercase", 
+        "lowercase",
         {
           "type": "stemmer",
           "name": "light_english"
         },
         "unique",
         {
-          "type": "stop", 
+          "type": "stop",
           "stopwords": "_english_, non"
         }
-      ], 
+      ],
         "text" : "Plant-based foods and beverages,Beverages,Plant-based foods,Hot beverages,Herbal teas,Teas in tea bags,Non-sugared beverages"
     }    
-    
+
     ```
 
 * Builds tokens using common grammar
@@ -190,7 +191,7 @@ Run several Boolean queries in Kibana
                   }
                 }
               }
-            }, 
+            },
             {
               "match": {
                 "productName": "Heineken"
@@ -201,10 +202,10 @@ Run several Boolean queries in Kibana
       }
     }
     ```
-    
-* Should instead of must. 
+
+* Should instead of must.
 * One criteria should match
-* Note categories are nested. 
+* Note categories are nested.
 
 3. Execute the following query in Kibana:
 
@@ -224,7 +225,7 @@ Run several Boolean queries in Kibana
                 }
               }
             }
-          ], 
+          ],
           "must_not": [
             {
               "match": {
@@ -264,9 +265,9 @@ Run several Boolean queries in Kibana
                     }
                   }
                 }
-              }, 
+              },
               "weight": 30
-            }, 
+            },
             {
               "filter": {
                 "nested": {
@@ -277,10 +278,10 @@ Run several Boolean queries in Kibana
                     }
                   }
                 }
-              }, 
+              },
               "weight": 28
             }     
-          ], 
+          ],
           "max_boost": 50,
           "score_mode": "max",
           "boost_mode": "multiply",
@@ -299,16 +300,16 @@ Run several Boolean queries in Kibana
 5. Add the following line before the first "query":
 
     ```
-    "explain": true, 
+    "explain": true,
     ```
-    
+
 * Elasticsearch provides full description of how Lucene arrived at results
 * Relevancy is a science
 * Explain helps to show scoring as well as TF vs. IDF
 
 # Demo 5 Aggregations
 
-Demonstrate aggregations. 
+Demonstrate aggregations.
 
 1. Paste the following in Kibana:
 
@@ -357,7 +358,7 @@ Demonstrate aggregations.
                 "field": "stores.name",
                 "size": 5000,
                 "order": {
-                  "_term": "asc"
+                  "_key": "asc"
                 }
               }
             }
@@ -366,10 +367,58 @@ Demonstrate aggregations.
       }
     }
     ```
-    
+
 * Several things here
-* Note that we have a size of 0. 
+* Note that we have a size of 0.
 * We don't want to return query results. I'll explain performance shortly
 * Next I have a query that assures there is a non-empty store name
 * Finally we have the "aggs" declaration
 * This says return all of store names up to a max of 5000 in ascending order.
+
+# Demo 6 Autocomplete
+
+Demonstrate auto-complete through suggesters.
+
+1. Run the following query we looked at earlier:
+    ```
+    GET food_product_index_v1/product/_search
+    {
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "match": {
+                "productName": "mo"
+              }
+            }
+          ]
+        }
+      }
+    }
+    ```
+
+* We have an existing analyzer using edge grams.
+* This allows me to support auto-complete
+
+2. Run the query again with more letters from the product name
+    ```
+    GET food_product_index_v1/product/_search
+    {
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "match": {
+                "productName": "mons"
+              }
+            }
+          ]
+        }
+      }
+    }
+    ```
+
+* Here we have a closer match.
+* Edge gram is a version of n-grams breaking text down into words
+* This is one approach which was used because the user didn't always know what they were searching for
+* Can use completion suggesters for more common searches

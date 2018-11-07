@@ -3,13 +3,30 @@
     "number_of_shards": 2,
     "number_of_replicas": 1,
     "analysis": {
-
       "analyzer": {
+        "productName_autocomplete": {
+          "type": "custom",
+          "tokenizer": "productName_autocomplete_tokenizer",
+          "filter": [
+            "lowercase",
+            "asciifolding"
+          ]
+        },
         "lang_prefix": {
           "tokenizer": "lang_tokenizer"
         }
       },
       "tokenizer": {
+        "productName_autocomplete_tokenizer": {
+          "type": "edge_ngram",
+          "min_gram": "2",
+          "max_gram": "25",
+          "token_chars": [
+            "letter",
+            "punctuation",
+            "whitespace"
+          ]
+        },
         "lang_tokenizer": {
           "pattern": ":",
           "type": "pattern"
@@ -37,7 +54,14 @@
           "index": "false"
         },
         "productName": {
-          "type": "text"
+          "type": "text",
+          "analyzer": "productName_autocomplete",
+          "fields": {
+            "raw": {
+              "type": "keyword",
+              "index": "false"
+            }
+          }
         },
         "genericName": {
           "type": "text"
